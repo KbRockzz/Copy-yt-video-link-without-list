@@ -1,0 +1,11 @@
+{
+  "manifest_version": 3,
+  "name": "Copy YouTube Video Link Without List",
+  "description": "Copy the current YouTube video URL with optional removal of the list parameter.",
+  "version": "1.0.0",
+  "permissions": ["storage", "activeTab"],
+  "action": {
+    "default_title": "Copy YouTube link",
+    "default_popup": "popup.html"
+  }
+}
