@@ -25,16 +25,26 @@ function getActiveTab() {
 }
 
 function getSetting() {
-  return new Promise((resolve) => {
+  return new Promise((resolve, reject) => {
     chrome.storage.sync.get({ [STORAGE_KEY]: true }, (result) => {
+      if (chrome.runtime.lastError) {
+        reject(new Error(chrome.runtime.lastError.message));
+        return;
+      }
+
       resolve(Boolean(result[STORAGE_KEY]));
     });
   });
 }
 
 function setSetting(value) {
-  return new Promise((resolve) => {
+  return new Promise((resolve, reject) => {
     chrome.storage.sync.set({ [STORAGE_KEY]: value }, () => {
+      if (chrome.runtime.lastError) {
+        reject(new Error(chrome.runtime.lastError.message));
+        return;
+      }
+
       resolve();
     });
   });
@@ -66,18 +76,26 @@ async function copyCurrentTabLink() {
 
 async function initPopup() {
   const enabledInput = document.getElementById('enabled');
-  enabledInput.checked = await getSetting();
+  const status = document.getElementById('status');
 
-  enabledInput.addEventListener('change', async () => {
-    try {
-      await setSetting(enabledInput.checked);
-    } catch (error) {
-      console.error(error);
-    }
-  });
+  try {
+    enabledInput.checked = await getSetting();
 
-  const copyButton = document.getElementById('copyButton');
-  copyButton.addEventListener('click', copyCurrentTabLink);
+    enabledInput.addEventListener('change', async () => {
+      try {
+        await setSetting(enabledInput.checked);
+      } catch (error) {
+        console.error(error);
+        status.textContent = 'Could not save setting.';
+      }
+    });
+
+    const copyButton = document.getElementById('copyButton');
+    copyButton.addEventListener('click', copyCurrentTabLink);
+  } catch (error) {
+    console.error(error);
+    status.textContent = 'Could not load setting.';
+  }
 }
 
 initPopup();
