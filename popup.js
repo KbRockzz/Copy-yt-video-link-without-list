@@ -1,4 +1,5 @@
 const STORAGE_KEY = 'removeListEnabled';
+const YOUTUBE_HOSTS = new Set(['www.youtube.com', 'youtube.com', 'm.youtube.com', 'youtu.be']);
 
 function stripListParameter(urlString) {
   const url = new URL(urlString);
@@ -55,8 +56,9 @@ async function copyCurrentTabLink() {
 
   try {
     const [tab, removeListEnabled] = await Promise.all([getActiveTab(), getSetting()]);
+    const tabUrl = new URL(tab.url);
 
-    if (!tab.url || !tab.url.startsWith('https://www.youtube.com/')) {
+    if (!YOUTUBE_HOSTS.has(tabUrl.hostname)) {
       status.textContent = 'Open a YouTube page first.';
       return;
     }
