@@ -57,7 +57,10 @@ async function copyCurrentTabLink() {
     status.textContent = 'Link copied.';
   } catch (error) {
     console.error(error);
-    status.textContent = 'Could not copy link.';
+    status.textContent =
+      error?.name === 'NotAllowedError'
+        ? 'Clipboard permission denied.'
+        : 'Could not copy link.';
   }
 }
 
@@ -66,7 +69,11 @@ async function initPopup() {
   enabledInput.checked = await getSetting();
 
   enabledInput.addEventListener('change', async () => {
-    await setSetting(enabledInput.checked);
+    try {
+      await setSetting(enabledInput.checked);
+    } catch (error) {
+      console.error(error);
+    }
   });
 
   const copyButton = document.getElementById('copyButton');
