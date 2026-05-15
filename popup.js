@@ -55,7 +55,8 @@ async function copyCurrentTabLink() {
     await navigator.clipboard.writeText(linkToCopy);
 
     status.textContent = 'Link copied.';
-  } catch {
+  } catch (error) {
+    console.error(error);
     status.textContent = 'Could not copy link.';
   }
 }

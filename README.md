@@ -13,5 +13,4 @@ Chrome extension popup to copy the active YouTube URL.
 1. Open `chrome://extensions`.
 2. Enable **Developer mode**.
 3. Click **Load unpacked**.
-4. Select this repository folder:
-   `/home/runner/work/Copy-yt-video-link-without-list/Copy-yt-video-link-without-list`
+4. Select the repository folder you cloned/downloaded locally.
