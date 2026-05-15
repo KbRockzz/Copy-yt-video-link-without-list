@@ -63,16 +63,18 @@ async function copyCurrentTabLink() {
       return;
     }
 
+    const removedList = removeListEnabled && tabUrl.searchParams.has('list');
     const linkToCopy = removeListEnabled ? stripListParameter(tab.url) : tab.url;
     await navigator.clipboard.writeText(linkToCopy);
 
-    status.textContent = 'Link copied.';
+    status.textContent = removedList
+      ? 'Link copied without list.'
+      : removeListEnabled
+        ? 'Link copied.'
+        : 'Original link copied.';
   } catch (error) {
     console.error(error);
-    status.textContent =
-      error?.name === 'NotAllowedError'
-        ? 'Clipboard permission denied.'
-        : 'Could not copy link.';
+    status.textContent = error.name === 'NotAllowedError' ? 'Clipboard permission denied.' : 'Could not copy link.';
   }
 }
 
