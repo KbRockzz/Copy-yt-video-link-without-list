@@ -1,9 +1,27 @@
 {
   "manifest_version": 3,
   "name": "Copy YouTube Video Link Without List",
-  "description": "Copy the current YouTube video URL with optional removal of the list parameter.",
-  "version": "1.0.0",
-  "permissions": ["storage", "activeTab"],
+  "description": "Copy the current YouTube video URL with optional removal of the list parameter. Hover over any video to copy its link!",
+  "version": "1.1.0",
+  "permissions": ["storage", "activeTab", "scripting"],
+  "host_permissions": [
+    "https://www.youtube.com/*",
+    "https://youtube.com/*",
+    "https://m.youtube.com/*",
+    "https://youtu.be/*"
+  ],
+  "content_scripts": [
+    {
+      "matches": [
+        "https://www.youtube.com/*",
+        "https://youtube.com/*",
+        "https://m.youtube.com/*"
+      ],
+      "js": ["content.js"],
+      "css": ["content.css"],
+      "run_at": "document_start"
+    }
+  ],
   "action": {
     "default_title": "Copy YouTube link",
     "default_popup": "popup.html"
